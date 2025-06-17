@@ -16,18 +16,19 @@ datasource db {
 }
 
 model Program {
-  id           String    @id @db.Uuid // MUST use v7 for better indexing
-  title        String    @db.VarChar(255)
-  slug         String    @unique
-  image_url    String
-  platform     String? // Spotify, Google...
-  author       String? // thamnya by default/null
-  description  String    @db.Text()
-  language     String    @db.VarChar() // english/arabic/...
-  type         String // Podcast/Documentary
-  published_at DateTime?
-  created_at   DateTime  @default(now())
-  updated_at   DateTime  @updatedAt()
+  id             String    @id @db.Uuid // MUST use v7 for better indexing
+  title          String    @db.VarChar(255)
+  slug           String    @unique
+  episodes_count Int       @default(0)
+  image_url      String
+  platform       String? // Spotify, Google...
+  author         String? // thamnya by default/null
+  description    String    @db.Text()
+  language       String    @db.VarChar() // english/arabic/...
+  type           String // Podcast/Documentary
+  published_at   DateTime?
+  created_at     DateTime  @default(now())
+  updated_at     DateTime  @updatedAt()
 
   episodes Episode[]
 

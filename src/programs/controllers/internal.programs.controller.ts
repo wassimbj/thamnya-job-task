@@ -16,14 +16,14 @@ import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { memoryStorage } from 'multer';
 import { CreateProgramRequestDto } from '../commands/create-program/create-program-request.dto';
 import { CreateProgramCommand } from '../commands/create-program/create-program.command';
+import { DeleteProgramCommand } from '../commands/delete-program/delete-program.command';
 import { UpdateProgramRequestDto } from '../commands/update-program/update-program-request.dto';
 import { UpdateProgramCommand } from '../commands/update-program/update-program.command';
-import { DeleteProgramCommand } from '../commands/delete-program/delete-program.command';
 
 // add internal guard
 @ApiTags('internal programs apis')
 @Injectable()
-@Controller('programs')
+@Controller('internal/programs')
 export class InternalProgramController {
   constructor(private readonly commandBus: CommandBus) {}
 

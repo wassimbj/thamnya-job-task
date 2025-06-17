@@ -23,7 +23,7 @@ import { UpdateEpisodeCommand } from '../commands/update-episode/update-episode.
 // add internal guard
 @ApiTags('internal episodes')
 @Injectable()
-@Controller('episodes')
+@Controller('internal/episodes')
 export class InternalEpisodeController {
   constructor(private readonly commandBus: CommandBus) {}
 

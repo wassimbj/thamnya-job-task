@@ -4,11 +4,11 @@ import { ProgramDto } from '../queries/get-programs/get-programs-response.dto';
 
 export type CreateProgramInput = Omit<
   ProgramModel,
-  'id' | 'updated_at' | 'created_at'
+  'id' | 'updated_at' | 'created_at' | 'episodes_count'
 >;
 
 export type UpdateProgramInput = Partial<
-  Omit<ProgramModel, 'id' | 'updated_at' | 'created_at'>
+  Omit<ProgramModel, 'id' | 'updated_at' | 'created_at' | 'episodes_count'>
 >;
 
 export type FindAllProgramsFilters = {

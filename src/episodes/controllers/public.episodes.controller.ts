@@ -14,7 +14,7 @@ export class PublicEpisodeController {
   @Version('1')
   @Get()
   @ApiOkResponse({ type: GetEpisodesResponseDto })
-  search(@Query() params: GetEpisodesRequestDto) {
+  findAll(@Query() params: GetEpisodesRequestDto) {
     return this.queryBus.execute(new GetEpisodesQuery(params));
   }
 }

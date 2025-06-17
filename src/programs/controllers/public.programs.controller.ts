@@ -14,7 +14,7 @@ export class PublicProgramController {
   @Version('1')
   @Get()
   @ApiOkResponse({ type: GetProgramsResponseDto })
-  search(@Query() params: GetProgramsRequestDto) {
+  findAll(@Query() params: GetProgramsRequestDto) {
     return this.queryBus.execute(new GetProgramsQuery(params));
   }
 }

@@ -16,11 +16,23 @@ export class PrismaEpisodeRepository implements EpisodeRepository {
 
   async create(data: CreateEpisodeInput): Promise<string> {
     const id = uuidv7();
-    await this.prisma.episode.create({
-      data: {
-        id,
-        ...data,
-      },
+    await this.prisma.$transaction(async (tx) => {
+      await tx.program.update({
+        where: {
+          id: data.program_id,
+        },
+        data: {
+          episodes_count: {
+            increment: 1,
+          },
+        },
+      });
+      await tx.episode.create({
+        data: {
+          id,
+          ...data,
+        },
+      });
     });
 
     return id;
@@ -36,10 +48,24 @@ export class PrismaEpisodeRepository implements EpisodeRepository {
   }
 
   async delete(id: string): Promise<void> {
-    await this.prisma.episode.delete({
-      where: {
-        id,
-      },
+    await this.prisma.$transaction(async (tx) => {
+      const deleteResult = await tx.episode.delete({
+        where: {
+          id,
+        },
+        select: { program_id: true },
+      });
+
+      await tx.program.update({
+        where: {
+          id: deleteResult.program_id,
+        },
+        data: {
+          episodes_count: {
+            decrement: 1,
+          },
+        },
+      });
     });
   }
 

@@ -6,6 +6,7 @@ export interface ProgramModel {
   type: ProgramTypeEnum;
   platform?: ProgramPlatformEnum; // (Spotify, Google..) if it's imported
   language: ProgramLanguageEnum;
+  episodes_count: number;
   author?: string;
   description: string;
   published_at?: Date | null;

@@ -21,6 +21,9 @@ export class ProgramDto {
   @ApiProperty({ enum: ProgramLanguageEnum })
   language: ProgramLanguageEnum;
 
+  @ApiProperty({ type: 'number' })
+  episodes_count: number;
+
   @ApiProperty({})
   slug: string;
 

@@ -60,6 +60,7 @@ export class PrismaProgramRepository implements ProgramRepository {
     return programs.map((program) => ({
       id: program.id,
       type: program.type as ProgramTypeEnum,
+      episodes_count: program.episodes_count,
       title: program.title,
       language: program.language as ProgramLanguageEnum,
       author: program.author ?? undefined,
