@@ -1,0 +1,36 @@
+services:
+  db:
+    image: postgres:16
+    container_name: thamnyadb
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_DB: thamnya
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: 123
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    # healthcheck:
+    #   test: ['CMD', 'pg_isready', '-U', 'root', '-d', 'thamnya']
+    #   interval: 5s
+    #   timeout: 5s
+    #   retries: 5
+
+  server:
+    build: .
+    container_name: nest-server
+    ports:
+      - '3000:3000'
+    depends_on:
+      - db
+        # condition: service_healthy
+    env_file:
+      - .env
+    command: yarn start:dev
+    volumes:
+      - .:/app
+      - ./uploads:/app/uploads
+      - /app/node_modules
+
+volumes:
+  postgres_data:

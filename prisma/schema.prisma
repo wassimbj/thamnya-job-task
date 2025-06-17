@@ -1,0 +1,54 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native"]
+  // binaryTargets = ["debian-openssl-3.0.x", "darwin", "darwin-arm64"] // based on your OS
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Program {
+  id           String    @id @db.Uuid // MUST use v7 for better indexing
+  title        String    @db.VarChar(255)
+  slug         String    @unique
+  image_url    String
+  platform     String? // Spotify, Google...
+  author       String? // thamnya by default/null
+  description  String    @db.Text()
+  language     String    @db.VarChar() // english/arabic/...
+  type         String // Podcast/Documentary
+  published_at DateTime?
+  created_at   DateTime  @default(now())
+  updated_at   DateTime  @updatedAt()
+
+  episodes Episode[]
+
+  @@map("programs")
+}
+
+model Episode {
+  id             String    @id @db.Uuid // MUST use v7 for better indexing
+  media_url      String // audio/video url
+  thumbnail_url  String
+  title          String    @db.VarChar(255)
+  description    String    @db.Text()
+  episode_number Int
+  duration       Int? // in seconds
+  published_at   DateTime?
+  created_at     DateTime  @default(now())
+  updated_at     DateTime  @updatedAt()
+
+  program    Program @relation(fields: [program_id], references: [id])
+  program_id String  @db.Uuid
+
+  @@unique([episode_number, program_id])
+  @@map("episodes")
+}
