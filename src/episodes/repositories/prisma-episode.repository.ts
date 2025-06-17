@@ -17,16 +17,19 @@ export class PrismaEpisodeRepository implements EpisodeRepository {
   async create(data: CreateEpisodeInput): Promise<string> {
     const id = uuidv7();
     await this.prisma.$transaction(async (tx) => {
-      await tx.program.update({
-        where: {
-          id: data.program_id,
-        },
-        data: {
-          episodes_count: {
-            increment: 1,
+      // episode must be published to be counted
+      if (data.published_at) {
+        await tx.program.update({
+          where: {
+            id: data.program_id,
           },
-        },
-      });
+          data: {
+            episodes_count: {
+              increment: 1,
+            },
+          },
+        });
+      }
       await tx.episode.create({
         data: {
           id,
@@ -39,11 +42,46 @@ export class PrismaEpisodeRepository implements EpisodeRepository {
   }
 
   async update(id: string, data: UpdateEpisodeInput): Promise<void> {
-    await this.prisma.episode.update({
-      data,
-      where: {
-        id,
-      },
+    await this.prisma.$transaction(async (tx) => {
+      const episode = await tx.episode.findFirst({
+        where: {
+          id,
+        },
+        select: { published_at: true, program_id: true },
+      });
+
+      if (!episode) {
+        return;
+      }
+
+      await tx.episode.update({
+        data,
+        where: {
+          id,
+        },
+      });
+
+      // state changed to published
+      const isPublished = !episode.published_at && data.published_at;
+      // state changed to unpublished
+      const isUnpublished = episode.published_at && !data.published_at;
+
+      if (isPublished || isUnpublished) {
+        await tx.program.update({
+          where: {
+            id: episode.program_id,
+          },
+          data: {
+            episodes_count: isPublished
+              ? {
+                  increment: 1,
+                }
+              : {
+                  decrement: 1,
+                },
+          },
+        });
+      }
     });
   }
 
