@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Injectable,
   Param,
   Patch,
@@ -11,14 +12,16 @@ import {
 } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
-import { ApiBody, ApiConsumes } from '@nestjs/swagger';
+import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { memoryStorage } from 'multer';
 import { CreateEpisodeRequestDto } from '../commands/create-episode/create-episode-request.dto';
 import { CreateEpisodeCommand } from '../commands/create-episode/create-episode.command';
-import { UpdateEpisodeCommand } from '../commands/update-episode/update-episode.command';
+import { DeleteEpisodeCommand } from '../commands/delete-episode/delete-episode.command';
 import { UpdateEpisodeRequestDto } from '../commands/update-episode/update-episode-request.dto';
+import { UpdateEpisodeCommand } from '../commands/update-episode/update-episode.command';
 
 // add internal guard
+@ApiTags('internal episodes')
 @Injectable()
 @Controller('episodes')
 export class InternalEpisodeController {
@@ -87,5 +90,11 @@ export class InternalEpisodeController {
         thumbnail: !files.thumbnail ? undefined : files.thumbnail[0],
       }),
     );
+  }
+
+  @Delete(':id')
+  @Version('1')
+  async delete(@Param('id') id: string) {
+    await this.commandBus.execute(new DeleteEpisodeCommand(id));
   }
 }

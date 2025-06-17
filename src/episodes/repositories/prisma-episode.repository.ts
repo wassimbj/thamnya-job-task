@@ -36,7 +36,7 @@ export class PrismaEpisodeRepository implements EpisodeRepository {
   }
 
   async delete(id: string): Promise<void> {
-    await this.prisma.program.delete({
+    await this.prisma.episode.delete({
       where: {
         id,
       },

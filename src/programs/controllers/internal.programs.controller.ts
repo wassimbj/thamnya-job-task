@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiBody, ApiConsumes } from '@nestjs/swagger';
+import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { memoryStorage } from 'multer';
 import { CreateProgramRequestDto } from '../commands/create-program/create-program-request.dto';
 import { CreateProgramCommand } from '../commands/create-program/create-program.command';
@@ -21,6 +21,7 @@ import { UpdateProgramCommand } from '../commands/update-program/update-program.
 import { DeleteProgramCommand } from '../commands/delete-program/delete-program.command';
 
 // add internal guard
+@ApiTags('internal programs apis')
 @Injectable()
 @Controller('programs')
 export class InternalProgramController {

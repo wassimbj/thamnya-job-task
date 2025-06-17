@@ -7,8 +7,13 @@ import { PublicEpisodeController } from './controllers/public.episodes.controlle
 import { EpisodeRepository } from './repositories/episode.repository';
 import { PrismaEpisodeRepository } from './repositories/prisma-episode.repository';
 import { GetEpisodesQueryHandler } from './queries/get-episodes/get-episodes.query';
+import { DeleteProgramCommandHandler } from './commands/delete-episode/delete-episode.command';
 
-const commands = [CreateEpisodeCommandHandler, UpdateEpisodeCommandHandler];
+const commands = [
+  CreateEpisodeCommandHandler,
+  UpdateEpisodeCommandHandler,
+  DeleteProgramCommandHandler,
+];
 const queries = [GetEpisodesQueryHandler];
 
 @Module({
