@@ -7,12 +7,37 @@ import {
   FindAllEpisodesFilters,
   FindAllEpisodesFiltersWithPagination,
   FindAllEpisodesResult,
+  FindOneEpisodeResult,
   UpdateEpisodeInput,
 } from './episode.interface';
 import { EpisodeRepository } from './episode.repository';
+import { PublishStatusFilterEnum } from 'src/shared/types/publish-status-filter.type';
 
 export class PrismaEpisodeRepository implements EpisodeRepository {
   constructor(@Inject(PrismaService) readonly prisma: PrismaService) {}
+
+  async findOne(id: string): Promise<FindOneEpisodeResult> {
+    const episode = await this.prisma.episode.findFirst({
+      where: {
+        id,
+      },
+    });
+
+    if (!episode) {
+      return undefined;
+    }
+
+    return {
+      description: episode.description,
+      episode_number: episode.episode_number,
+      id: episode.id,
+      media_url: episode.media_url,
+      thumbnail_url: episode.thumbnail_url,
+      title: episode.title,
+      duration: episode.duration ?? undefined,
+      published_at: episode.published_at ?? undefined,
+    };
+  }
 
   async create(data: CreateEpisodeInput): Promise<string> {
     const id = uuidv7();
@@ -152,6 +177,14 @@ export class PrismaEpisodeRepository implements EpisodeRepository {
     filters: FindAllEpisodesFilters,
   ): Prisma.EpisodeWhereInput {
     const where: Prisma.EpisodeWhereInput = {};
+
+    if (filters.status === PublishStatusFilterEnum.Published) {
+      where.published_at = {
+        not: null,
+      };
+    } else if (filters.status === PublishStatusFilterEnum.UnPublished) {
+      where.published_at = null;
+    }
 
     if (filters.programId) {
       where.program_id = filters.programId;

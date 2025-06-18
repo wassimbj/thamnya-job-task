@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class EpisodesListItemDto {
+export class EpisodeDto {
   @ApiProperty({})
   id: string;
 
@@ -14,6 +14,9 @@ export class EpisodesListItemDto {
   media_url: string;
 
   @ApiProperty({ type: 'number' })
+  duration?: number;
+
+  @ApiProperty({ type: 'number' })
   episode_number: number;
 
   @ApiProperty({})
@@ -21,17 +24,9 @@ export class EpisodesListItemDto {
 
   @ApiProperty({ type: Date })
   published_at?: Date;
-
-  @ApiProperty({
-    type: 'string',
-  })
-  program_title: string;
 }
 
-export class GetEpisodesResponseDto {
-  @ApiProperty({ type: EpisodesListItemDto, isArray: true })
-  episodes: EpisodesListItemDto[];
-
-  @ApiProperty({ type: 'number' })
-  total: number;
+export class GetEpisodeResponseDto {
+  @ApiProperty({ type: EpisodeDto })
+  episode?: EpisodeDto;
 }

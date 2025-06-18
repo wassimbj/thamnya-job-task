@@ -1,6 +1,7 @@
 import { ProgramModel, ProgramTypeEnum } from '../domain/models/program.model';
-import { OffsetPaginationFilters } from 'src/shared/interfaces/offset-pagination-request.interface';
-import { ProgramDto } from '../queries/get-programs/get-programs-response.dto';
+import { OffsetPaginationFilters } from 'src/shared/types/offset-pagination-request.interface';
+import { ProgramsListItemDto } from '../queries/get-programs/get-programs-response.dto';
+import { PublishStatusFilterEnum } from 'src/shared/types/publish-status-filter.type';
 
 export type CreateProgramInput = Omit<
   ProgramModel,
@@ -14,9 +15,10 @@ export type UpdateProgramInput = Partial<
 export type FindAllProgramsFilters = {
   query?: string;
   type?: ProgramTypeEnum;
+  status?: PublishStatusFilterEnum;
 };
 
 export type FindAllProgramsFiltersWithPagination = FindAllProgramsFilters &
   OffsetPaginationFilters;
 
-export type FindAllProgramsResult = ProgramDto[];
+export type FindAllProgramsResult = ProgramsListItemDto[];

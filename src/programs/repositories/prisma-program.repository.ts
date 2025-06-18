@@ -15,6 +15,7 @@ import {
   UpdateProgramInput,
 } from './program.interface';
 import { ProgramRepository } from './program.repository';
+import { PublishStatusFilterEnum } from 'src/shared/types/publish-status-filter.type';
 
 export class PrismaProgramRepository implements ProgramRepository {
   constructor(@Inject(PrismaService) readonly prisma: PrismaService) {}
@@ -84,6 +85,14 @@ export class PrismaProgramRepository implements ProgramRepository {
 
     if (filters.type) {
       where.type = filters.type;
+    }
+
+    if (filters.status === PublishStatusFilterEnum.Published) {
+      where.published_at = {
+        not: null,
+      };
+    } else if (filters.status === PublishStatusFilterEnum.UnPublished) {
+      where.published_at = null;
     }
 
     if (filters.query) {

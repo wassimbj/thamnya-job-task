@@ -5,7 +5,7 @@ import {
   ProgramTypeEnum,
 } from 'src/programs/domain/models/program.model';
 
-export class ProgramDto {
+export class ProgramsListItemDto {
   @ApiProperty({})
   id: string;
 
@@ -38,8 +38,8 @@ export class ProgramDto {
 }
 
 export class GetProgramsResponseDto {
-  @ApiProperty({ type: ProgramDto, isArray: true })
-  programs: ProgramDto[];
+  @ApiProperty({ type: ProgramsListItemDto, isArray: true })
+  programs: ProgramsListItemDto[];
 
   @ApiProperty({ type: 'number' })
   total: number;

@@ -1,7 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsOptional } from 'class-validator';
+import { IsEnum, IsOptional } from 'class-validator';
 import { OffsetPaginationRequestDto } from 'src/shared/dtos/offset-pagination-request.dto';
+import { PublishStatusFilterEnum } from 'src/shared/types/publish-status-filter.type';
 
 export class GetEpisodesRequestDto extends OffsetPaginationRequestDto {
   @ApiProperty({ type: 'string', required: false })
@@ -16,4 +17,13 @@ export class GetEpisodesRequestDto extends OffsetPaginationRequestDto {
   @Transform(({ value }) => value === 'true' || value === true)
   @IsOptional()
   includeProgramTitle?: boolean;
+
+  @ApiProperty({
+    type: 'string',
+    enum: PublishStatusFilterEnum,
+    required: false,
+  })
+  @IsEnum(PublishStatusFilterEnum)
+  @IsOptional()
+  status?: PublishStatusFilterEnum;
 }

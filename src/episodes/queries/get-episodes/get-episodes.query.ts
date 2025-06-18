@@ -23,6 +23,7 @@ export class GetEpisodesQueryHandler
     const episodes = await this.episodeRepo.findAll({
       programId: query.data.programId,
       includeProgramTitle: query.data.includeProgramTitle,
+      status: query.data.status,
       query: query.data.query,
       limit: query.data.limit,
       offset: query.data.offset,
@@ -31,6 +32,7 @@ export class GetEpisodesQueryHandler
     const total = await this.episodeRepo.countFindAll({
       programId: query.data.programId,
       query: query.data.query,
+      status: query.data.status,
     });
 
     return {
