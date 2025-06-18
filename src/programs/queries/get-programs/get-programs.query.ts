@@ -26,12 +26,14 @@ export class GetProgramsQueryHandler
       limit: query.data.limit,
       offset: query.data.offset,
       status: query.data.status,
+      language: query.data.language,
     });
 
     const total = await this.programRepo.countFindAll({
       type: query.data.type,
       query: query.data.query,
       status: query.data.status,
+      language: query.data.language,
     });
 
     return {

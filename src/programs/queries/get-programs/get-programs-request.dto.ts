@@ -1,6 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEnum, IsOptional } from 'class-validator';
-import { ProgramTypeEnum } from 'src/programs/domain/models/program.model';
+import {
+  ProgramLanguageEnum,
+  ProgramTypeEnum,
+} from 'src/programs/domain/models/program.model';
 import { OffsetPaginationRequestDto } from 'src/shared/dtos/offset-pagination-request.dto';
 import { PublishStatusFilterEnum } from 'src/shared/types/publish-status-filter.type';
 
@@ -22,4 +25,13 @@ export class GetProgramsRequestDto extends OffsetPaginationRequestDto {
   @IsEnum(PublishStatusFilterEnum)
   @IsOptional()
   status?: PublishStatusFilterEnum;
+
+  @ApiProperty({
+    type: 'string',
+    enum: ProgramLanguageEnum,
+    required: false,
+  })
+  @IsEnum(ProgramLanguageEnum)
+  @IsOptional()
+  language?: ProgramLanguageEnum;
 }

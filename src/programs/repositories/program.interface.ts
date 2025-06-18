@@ -1,4 +1,8 @@
-import { ProgramModel, ProgramTypeEnum } from '../domain/models/program.model';
+import {
+  ProgramLanguageEnum,
+  ProgramModel,
+  ProgramTypeEnum,
+} from '../domain/models/program.model';
 import { OffsetPaginationFilters } from 'src/shared/types/offset-pagination-request.interface';
 import { ProgramsListItemDto } from '../queries/get-programs/get-programs-response.dto';
 import { PublishStatusFilterEnum } from 'src/shared/types/publish-status-filter.type';
@@ -16,6 +20,7 @@ export type FindAllProgramsFilters = {
   query?: string;
   type?: ProgramTypeEnum;
   status?: PublishStatusFilterEnum;
+  language?: ProgramLanguageEnum;
 };
 
 export type FindAllProgramsFiltersWithPagination = FindAllProgramsFilters &

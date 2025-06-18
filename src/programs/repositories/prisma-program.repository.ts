@@ -1,6 +1,7 @@
 import { Inject } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/shared/database/database.service';
+import { PublishStatusFilterEnum } from 'src/shared/types/publish-status-filter.type';
 import { uuidv7 } from 'uuidv7';
 import {
   ProgramLanguageEnum,
@@ -15,7 +16,6 @@ import {
   UpdateProgramInput,
 } from './program.interface';
 import { ProgramRepository } from './program.repository';
-import { PublishStatusFilterEnum } from 'src/shared/types/publish-status-filter.type';
 
 export class PrismaProgramRepository implements ProgramRepository {
   constructor(@Inject(PrismaService) readonly prisma: PrismaService) {}
@@ -85,6 +85,10 @@ export class PrismaProgramRepository implements ProgramRepository {
 
     if (filters.type) {
       where.type = filters.type;
+    }
+
+    if (filters.language) {
+      where.language = filters.language;
     }
 
     if (filters.status === PublishStatusFilterEnum.Published) {
