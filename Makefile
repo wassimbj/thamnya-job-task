@@ -18,7 +18,7 @@ init_env:
 	cp .env.example .env
 
 # what you need to run the server
-.PHONY: init
+.PHONY: start
 start:
 	@echo "building and running the app..."
 	docker compose up --build
